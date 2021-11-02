@@ -1,7 +1,23 @@
 package io.cucumber.skeleton;
 
 public class Belly {
-    public void eat(int cukes) {
 
+    private int cukes;
+
+    public Belly() {
+        this.cukes = 0;
     }
+
+    public void eat(int cukes) {
+        this.cukes += cukes;
+    }
+
+    public void diggest(int hour) {
+        this.cukes -= hour;
+    }
+
+    public int getCukes() {
+        return cukes;
+    }
+
 }
