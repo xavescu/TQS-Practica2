@@ -1,8 +1,6 @@
 package io.cucumber.skeleton;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
+import io.cucumber.java.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -17,13 +15,19 @@ public class WebStepDefinitions {
      * Note: You must have installed chromedriver in your system
      *       https://chromedriver.chromium.org/downloads
      *       The version must match with the version of your Chrome browser
-     *
-     *      // Optional. If not specified, WebDriver searches the PATH for chromedriver.
-     *      System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
      */
 
-    private final WebDriver driver = new ChromeDriver();
+    private static WebDriver driver;
     private Scenario scenario;
+
+    @BeforeAll
+    public static void setUp() {
+        // This property is optional.
+        // If not specified, WebDriver searches the path for chromedriver in your environment variables
+        // Example path for Linux or Mac:
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        driver = new ChromeDriver();
+    }
 
     @Before
     public void before(Scenario scenario) {
@@ -53,8 +57,9 @@ public class WebStepDefinitions {
         scenario.attach(screenshot, "image/png", "filename");
     }
 
-    @After()
-    public void closeBrowser() {
+    @AfterAll()
+    public static void tearDown() {
         driver.quit();
     }
+
 }
