@@ -39,11 +39,22 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com");
     }
 
+    @Given("I go to the Add Remove Elements section page")
+    public void iGoToAddRemoveElementsSectionPage(){
+        driver.get("https://the-internet.herokuapp.com/add_remove_elements/");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
         boolean present = driver.findElements(byXPath).size() > 0;
         Assertions.assertTrue(present);
+    }
+
+    @Then("I should see {int} Buttons")
+    public void iShouldSeeAnAmountOfButtons(int expected_count){
+        int count = driver.findElements(By.tagName("button")).size();
+        Assertions.assertEquals(expected_count, count);
     }
 
     @Then("I should see {int} linkTexts")
@@ -69,14 +80,15 @@ public class WebStepDefinitions {
         driver.findElement(By.linkText(link_text)).click();
     }
 
-    @Then("I go to the Add Remove Elements section")
-    public void iGoToTheAddRemoveElementsSection(){
+    @Then("I'm in the Add Remove Elements section")
+    public void iMInTheTheAddRemoveElementsSection(){
         Assertions.assertEquals("https://the-internet.herokuapp.com/add_remove_elements/", driver.getCurrentUrl());
     }
 
     @When("I click on {string} button")
     public void iClickOnButton(String button_text) {
-        driver.findElement(By.linkText(button_text)).click();
+        By byXPath = By.xpath("//*[contains(text(),'" + button_text + "')]");
+        driver.findElement(byXPath).click();
     }
 
     @And("I take a screenshot with filename {string}")

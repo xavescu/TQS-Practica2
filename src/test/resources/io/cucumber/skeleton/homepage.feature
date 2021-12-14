@@ -18,4 +18,4 @@ Feature: Tests a page using Selenium WebDriver
   Scenario: My homepage is able to send us to the Add/Remove Section
   Given I go to the home page
   When I click on "Add/Remove Elements" linkText
-  Then I go to the Add Remove Elements section
+  Then I'm in the Add Remove Elements section
