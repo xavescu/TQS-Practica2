@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.Objects;
+
 public class WebStepDefinitions {
 
     /**
@@ -44,6 +46,11 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com/add_remove_elements/");
     }
 
+    @Given("I go to the Checkboxes section page")
+    public void iGoToTheCheckboxesSectionPage() {
+        driver.get("https://the-internet.herokuapp.com/checkboxes");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
@@ -66,6 +73,12 @@ public class WebStepDefinitions {
     @Then("I should see {int} list elements")
     public void iShouldSeeAnAmountOfListElements(int expected_count){
         int count = driver.findElements(By.tagName("li")).size();
+        Assertions.assertEquals(expected_count, count);
+    }
+
+    @Then("I should see {int} checkboxes")
+    public void iShouldSeeAnAmountOfCheckboxes(int expected_count){
+        int count = driver.findElements(By.xpath("//input[@type='checkbox']")).size();
         Assertions.assertEquals(expected_count, count);
     }
 
@@ -100,5 +113,39 @@ public class WebStepDefinitions {
     @AfterAll()
     public static void tearDown() {
         driver.quit();
+    }
+
+    @Then("{string} checkbox IS NOT checked")
+    public void checkboxISNOTChecked(String text) {
+        boolean isChecked = false;
+        if(Objects.equals(text, "checkbox 1")){
+            isChecked = driver.findElements(By.xpath("//input[@type='checkbox']")).get(0).isSelected();
+        }
+        if(Objects.equals(text, "checkbox 2")){
+            isChecked = driver.findElements(By.xpath("//input[@type='checkbox']")).get(1).isSelected();
+        }
+        Assertions.assertFalse(isChecked);
+    }
+
+    @Then("{string} checkbox IS checked")
+    public void checkboxISChecked(String text) {
+        boolean isChecked = false;
+        if(Objects.equals(text, "checkbox 1")){
+            isChecked = driver.findElements(By.xpath("//input[@type='checkbox']")).get(0).isSelected();
+        }
+        if(Objects.equals(text, "checkbox 2")){
+            isChecked = driver.findElements(By.xpath("//input[@type='checkbox']")).get(1).isSelected();
+        }
+        Assertions.assertTrue(isChecked);
+    }
+
+    @When("I click {string} checkbox")
+    public void iClickCheckbox(String text) {
+        if(Objects.equals(text, "checkbox 1")){
+            driver.findElements(By.xpath("//input[@type='checkbox']")).get(0).click();
+        }
+        if(Objects.equals(text, "checkbox 2")){
+            driver.findElements(By.xpath("//input[@type='checkbox']")).get(1).click();
+        }
     }
 }
