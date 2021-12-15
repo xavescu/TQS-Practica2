@@ -1,7 +1,7 @@
 Feature: Tests a page using Selenium WebDriver
   In order to evaluate Selenium Framework
   As a developer
-  I want to interact with my Checkboxes page
+  I want to interact with my Dropdown page
 
   Scenario: The section has the expected dropdowns
     Given I go to the Dropdown section page

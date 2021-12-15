@@ -57,6 +57,11 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com/dropdown");
     }
 
+    @Given("I go to the Inputs section page")
+    public void iGoToTheInputsSectionPage() {
+        driver.get("https://the-internet.herokuapp.com/inputs");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
@@ -92,6 +97,24 @@ public class WebStepDefinitions {
     public void iShouldSeeDropdowns(int expected_count) {
         int count = driver.findElements(By.xpath("//*[@id='dropdown']")).size();
         Assertions.assertEquals(expected_count, count);
+    }
+
+    @Then("I should see {int} number inputs")
+    public void iShouldSeeNumberInputs(int expected_count) {
+        int count = driver.findElements(By.xpath("//*[@id='content']/div/div/div/input")).size();
+        Assertions.assertEquals(expected_count, count);
+    }
+
+    @Then("Input value is empty")
+    public void inputValueIsEmpty() {
+        String value = driver.findElement(By.xpath("//*[@id='content']/div/div/div/input")).getAttribute("value");
+        Assertions.assertEquals("", value);
+    }
+
+    @Then("Input value is {string}")
+    public void inputValueIsSomething(String expected_value) {
+        String value = driver.findElement(By.xpath("//*[@id='content']/div/div/div/input")).getAttribute("value");
+        Assertions.assertEquals(expected_value, value);
     }
 
     @Then("I should see a {string} linkText")
@@ -201,5 +224,11 @@ public class WebStepDefinitions {
             }
         }
         Assertions.assertTrue(correct);
+    }
+
+    @When("I click the increment arrow")
+    public void iClickTheIncrementArrow() {
+        //*[@id="content"]/div/div/div/input//div/div[2]
+        driver.findElement(By.xpath("//*[@id='content']/div/div/div/input//div/div[1]")).click();
     }
 }
