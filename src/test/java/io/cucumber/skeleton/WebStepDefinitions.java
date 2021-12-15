@@ -8,6 +8,7 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.Objects;
 
@@ -51,6 +52,11 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com/checkboxes");
     }
 
+    @Given("I go to the Dropdown section page")
+    public void iGoToTheDropdownSectionPage() {
+        driver.get("https://the-internet.herokuapp.com/dropdown");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
@@ -79,6 +85,12 @@ public class WebStepDefinitions {
     @Then("I should see {int} checkboxes")
     public void iShouldSeeAnAmountOfCheckboxes(int expected_count){
         int count = driver.findElements(By.xpath("//input[@type='checkbox']")).size();
+        Assertions.assertEquals(expected_count, count);
+    }
+
+    @Then("I should see {int} dropdowns")
+    public void iShouldSeeDropdowns(int expected_count) {
+        int count = driver.findElements(By.xpath("//*[@id='dropdown']")).size();
         Assertions.assertEquals(expected_count, count);
     }
 
@@ -147,5 +159,47 @@ public class WebStepDefinitions {
         if(Objects.equals(text, "checkbox 2")){
             driver.findElements(By.xpath("//input[@type='checkbox']")).get(1).click();
         }
+    }
+
+    @And("Dropdown has the disabled value option selected")
+    public void dropdownHasTheDisabledValueOptionSelected() {
+        Select s = new Select(driver.findElement(By.xpath("//*[@id='dropdown']")));
+    }
+
+    @Then("Dropdown has {int} available options")
+    public void dropdownHasAvailableOptions(int expected_count) {
+        WebElement dropdown = driver.findElement(By.xpath("//*[@id='dropdown']"));
+        Select select = new Select(dropdown);
+        Assertions.assertEquals(expected_count,select.getOptions().size());
+    }
+
+    @When("I select {int} option of the dropdown")
+    public void iSelectOptionOfTheDropdown(int option){
+        WebElement dropdown = driver.findElement(By.xpath("//*[@id='dropdown']"));
+        Select select = new Select(dropdown);
+        if(option == 1){
+            select.selectByVisibleText("Option 1");
+        }
+        if(option == 2){
+            select.selectByVisibleText("Option 2");
+        }
+    }
+
+    @Then("{int} option of the dropdown is selected")
+    public void optionOfTheDropdownIsSelected(int option) {
+        WebElement dropdown = driver.findElement(By.xpath("//*[@id='dropdown']"));
+        Select select = new Select(dropdown);
+        boolean correct = false;
+        if(option == 1){
+            if(Objects.equals(select.getFirstSelectedOption().getText(), "Option 1")){
+                correct = true;
+            }
+        }
+        if(option == 2){
+            if(Objects.equals(select.getFirstSelectedOption().getText(), "Option 2")){
+                correct = true;
+            }
+        }
+        Assertions.assertTrue(correct);
     }
 }
