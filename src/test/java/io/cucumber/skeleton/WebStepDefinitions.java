@@ -67,6 +67,11 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com/login");
     }
 
+    @Given("I go to the js alerts page")
+    public void iGoToTheJSAlertsPage() {
+        driver.get("https://the-internet.herokuapp.com/javascript_alerts");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
@@ -284,5 +289,25 @@ public class WebStepDefinitions {
     @When("I wait {int} milliseconds")
     public void iWaitSomeMilliseconds(int milliseconds) throws InterruptedException {
         Thread.sleep(milliseconds);
+    }
+
+    @When("I close the JS Alert")
+    public void iCloseTheJSAlert() {
+        driver.switchTo().alert().dismiss();
+    }
+
+    @When("I accept the JS Alert")
+    public void iAcceptTheJSAlert() {
+        driver.switchTo().alert().accept();
+    }
+
+    @Then("I have {string} as result message")
+    public void iHaveAsResultMessage(String message) {
+        Assertions.assertEquals(message, driver.findElement(By.xpath("//*[@id='result']")).getText());
+    }
+
+    @And("I enter {string} to the JS Alert")
+    public void iEnterToTheJSAlert(String string) {
+        driver.switchTo().alert().sendKeys(string);
     }
 }
