@@ -62,6 +62,11 @@ public class WebStepDefinitions {
         driver.get("https://the-internet.herokuapp.com/inputs");
     }
 
+    @Given("I go to the login page")
+    public void iGoToTheLoginPage() {
+        driver.get("https://the-internet.herokuapp.com/login");
+    }
+
     @Then("I should see a {string} button")
     public void iShouldSeeAButton(String text) {
         By byXPath = By.xpath("//*[contains(text(),'" + text + "')]");
@@ -230,5 +235,54 @@ public class WebStepDefinitions {
     public void iClickTheIncrementArrow() {
         //*[@id="content"]/div/div/div/input//div/div[2]
         driver.findElement(By.xpath("//*[@id='content']/div/div/div/input//div/div[1]")).click();
+    }
+
+    @When("I add {string} as user")
+    public void iAddAsUser(String user) {
+        driver.findElement(By.xpath("//*[@id='username']")).sendKeys(user);
+    }
+
+    @When("I add {string} as pass")
+    public void iAddAsPass(String pass) {
+        driver.findElement(By.xpath("//*[@id='password']")).sendKeys(pass);
+    }
+
+    @Then("I see error message User")
+    public void iSeeErrorMessageUser(){
+        boolean expectedMessage = driver.findElement(By.xpath("/html/body/div[1]/div")).getText().contains("Your username is invalid!");
+        Assertions.assertTrue(expectedMessage);
+    }
+
+    @Then("I see error message Password")
+    public void iSeeErrorMessagePassword(){
+        boolean expectedMessage = driver.findElement(By.xpath("/html/body/div[1]/div")).getText().contains("Your password is invalid!");
+        Assertions.assertTrue(expectedMessage);
+    }
+
+    @Then("I see success message")
+    public void iSeeSuccessMessage(){
+        boolean expectedMessage = driver.findElement(By.xpath("/html/body/div[1]/div")).getText().contains("You logged into a secure area!");
+        Assertions.assertTrue(expectedMessage);
+    }
+
+    @Then("I see success logout message")
+    public void iSeeSuccessLogoutMessage(){
+        boolean expectedMessage = driver.findElement(By.xpath("/html/body/div[1]/div")).getText().contains("You logged out of the secure area!");
+        Assertions.assertTrue(expectedMessage);
+    }
+
+    @When("I click on Login button")
+    public void iClickOnLoginButton() {
+        driver.findElement(By.xpath("//*[@id='login']/button")).click();
+    }
+
+    @When("I click on Logout button")
+    public void iClickOnLogoutButton() {
+        driver.findElement(By.xpath("//*[@id='content']/div/a")).click();
+    }
+
+    @When("I wait {int} milliseconds")
+    public void iWaitSomeMilliseconds(int milliseconds) throws InterruptedException {
+        Thread.sleep(milliseconds);
     }
 }
