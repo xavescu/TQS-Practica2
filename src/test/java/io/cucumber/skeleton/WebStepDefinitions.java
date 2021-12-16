@@ -10,6 +10,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class WebStepDefinitions {
@@ -70,6 +71,11 @@ public class WebStepDefinitions {
     @Given("I go to the js alerts page")
     public void iGoToTheJSAlertsPage() {
         driver.get("https://the-internet.herokuapp.com/javascript_alerts");
+    }
+
+    @Given("I go to the slider page")
+    public void iGoToTheSliderPage() {
+        driver.get("https://the-internet.herokuapp.com/horizontal_slider");
     }
 
     @Then("I should see a {string} button")
@@ -309,5 +315,11 @@ public class WebStepDefinitions {
     @And("I enter {string} to the JS Alert")
     public void iEnterToTheJSAlert(String string) {
         driver.switchTo().alert().sendKeys(string);
+    }
+
+    @Then("Slider has value {string}")
+    public void sliderHasValue(String expectedValue) {
+        String actualValue = driver.findElement(By.xpath("//*[@id='content']/div/div/input")).getAttribute("value");
+        Assertions.assertTrue(Objects.equals(expectedValue, actualValue));
     }
 }
